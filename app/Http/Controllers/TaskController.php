@@ -77,6 +77,8 @@ class TaskController extends Controller
     public function edit($id)
     {
         //GET edit will be the method used to allow us to edit an existing task.
+        $task = Task::find($id);
+        return view('tasks.edit')->with('task',$task);
     }
 
     /**
@@ -89,6 +91,21 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         //PUT/PATCH update will be the method that gets called for updating an existing task.
+        
+        $task = Task::find($id);
+
+        $this->validate($request, [
+            'title' => 'required',
+        '   description' => 'required'
+        ]);
+
+        $input = $request->all();
+
+        $task->fill($input)->save();
+
+        Session::flash('flash_message', 'Task successfully updated!');
+
+        return redirect()->back();
     }
 
     /**
