@@ -17,7 +17,8 @@ class TaskController extends Controller
     public function index()
     {
         //GET index the main page of for /tasks route.
-        return view('tasks.index');
+        $tasks = Task::all();
+        return view('tasks.index')->with('tasks',$tasks);
     }
 
     /**
@@ -40,9 +41,18 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         //POST store will be the method we use to handle POST data from the task creation, and store it in the database.
-        $input = $request->all();
-        Task::create($input);
-        return redirect()->back();
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+          ]);
+        
+          $input = $request->all();
+        
+          Task::create($input);
+        
+          Session::flash('flash_message', 'Task successfully added!');
+        
+          return redirect()->back();
     }
 
     /**
@@ -54,6 +64,8 @@ class TaskController extends Controller
     public function show($id)
     {
         //GET show will be the method used to show a single task.
+        $task = Task::find($id);
+        return view('tasks.show')->with('task',$task);
     }
 
     /**

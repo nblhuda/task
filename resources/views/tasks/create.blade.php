@@ -5,6 +5,19 @@
 <h1>Add a New Task</h1>
 <p class="lead">Add to your task list below.</p>
 <hr>
+@if(Session::has('flash_message'))
+  <div class="alert alert-success">
+    {{ Session::get('flash_message') }}
+  </div>
+@endif
+
+@if($errors->any())
+  <div class="alert alert-danger">
+    @foreach($errors->all() as $error)
+      <p>{{ $error }}</p>
+    @endforeach
+  </div>
+@endif
 
 {!! Form::open([
     'route' => 'tasks.store'
