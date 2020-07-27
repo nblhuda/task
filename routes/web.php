@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PageController@home') ; //main route
+Route::resource('tasks', 'TaskController'); //a resources route which assigned to typical 'CRUD' controller (TasksController)
+                                            //which predefined with loads of functions
